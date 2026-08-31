@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Review"
+  short_description: "PR 변경의 호환성, 정합성, 잠재 문제를 검토합니다"
+  default_prompt: "Use $pr-review to review this pull request URL for compatibility, consistency, bugs, and side effects."
