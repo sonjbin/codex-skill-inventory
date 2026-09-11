@@ -1,75 +1,49 @@
-# Codex 실험 운영 가이드
+# 실험 관리 가이드
 
-## 목적
+## 탐색과 분류
 
-Codex를 사용한 장기·반복 실험의 재현성, 추적성, context 효율 관리.
+- 조회: 전체 `INDEX.md` → 관련 주제 `INDEX.md` → 필요한 study 보고서 순서
+- 실행: 위 탐색 후 `CURRENT_STATE.md`와 `../ENVIRONMENT.md`의 해당 프로파일 확인
+- 같은 목적·가설·조건의 재실행: 기존 study에 고유 run 추가
+- 관련 모델·프롬프트·해상도·데이터·지표 비교: 기존 주제의 `studies/<ID>-<slug>/REPORT.md` 생성
+- 해당 연구 목적을 포함하는 주제 부재: 새 주제 폴더와 `README.md`, `INDEX.md` 생성
+- 주제 간 비교: 소유 주제 하나 선정 후 관련 인덱스에서 교차 참조. 결과 복제 금지
+- ID: 모든 주제 인덱스에서 중복 검사 후 다음 E번호 예약. 예약·인덱스 쓰기는 main agent 직렬 처리
 
-## 문서 역할
+## 기록 범위
 
-| 문서 | 역할 |
-| --- | --- |
-| CURRENT_STATE.md | 현재 목표, baseline, 핵심 결론, 다음 실험 관리 |
-| EXPERIMENT_INDEX.md | 실험 목록과 상태 관리 |
-| experiments/E###.md | 개별 실험의 가설, 설정, 결과, 결정 관리 |
-| runs/E###/ | raw log, compact status, 완료 marker, 산출물 관리 |
+- Study 템플릿: [EXPERIMENT.md](templates/EXPERIMENT.md)
+- 주제 `README.md`: 연구 범위, 현행 baseline 링크, 비교 가능 조건
+- 주제 `INDEX.md`: ID, 제목/검색어, 상태, 결정, 보고서 링크. 신규 항목에 데이터 버전·주 지표·baseline 명시
+- Study 보고서: 목적·가설·baseline·설정 차이·성공/중단 기준·결과·해석·다음 조치
+- Run manifest: 참여 레포별 commit/dirty patch와 hash, 모델/checkpoint·입력·프롬프트·평가 코드 hash, seed, 실행 명령, 프로파일 revision/hash, 최종 설정, 실제 환경·GPU 배치
+- 서로 다른 데이터·marker 정책·metric·aggregation의 점수는 동등 조건으로 병합 금지. `supersedes`, `derived_from`, 비교 제한 명시
+- 과거 manifest 누락은 `unknown` 기록. 현재 환경으로 과거 설정 추정 금지
 
-Raw log는 보존한다. 판단과 다음 조치는 개별 실험 요약 및 CURRENT_STATE.md에만 기록한다.
+## 환경과 아티팩트
 
-## 실험 시작
+- 공통 기본값 → 모델/작업 프로파일 → 범위가 명시된 예외 → 명시적 실행 변경 순서 적용
+- 모든 기본값·예외는 `../ENVIRONMENT.md` 한 곳에서 관리. Study에는 참조와 변경 요약만 기록
+- 문서는 실행 설정을 자동 적용하지 않으므로 실행 명령·config와 최종 manifest 대조 필수
+- 실제 GPU 점유 상태 매 실행 확인. 일회 예외를 다음 실행의 기본값으로 전파 금지
+- 기존 산출물 경로 보존. 신규 실행은 소유 레포의 `<output-root>/<topic>/<study>/<run-id>/` 사용
+- Run 내부 `manifest.json`, `status.json`, `summary.json`, `logs/`, `predictions/`, `plots/` 중 해당 항목 저장
+- Checkpoint는 학습 레포에서 관리. 공통 문서 Git에 로그·prediction·가중치 추가 금지
+- Smoke 정책은 적용 workspace/레포 AGENTS 기준 확인. 실제 오류 수정 검증은 해당 최소 조건으로 수행 후 본 실행 재개
 
-1. CURRENT_STATE.md와 baseline 실험을 확인한다.
-2. 실험 ID를 발급하고 experiments/E###.md를 템플릿에서 생성한다.
-3. 목적, 가설, baseline 대비 단일 주요 변경, 검증 기준, 중단 조건을 기록한다.
-4. 데이터셋, checkpoint, 실행 명령, 출력 경로, 자원 충돌 여부를 확인한다.
+## Context와 완료 조건
 
-## 실행과 추적
-
-- baseline 대비 하나의 주요 가설만 변경한다. 여러 변경이 불가피하면 해석 불가 위험을 실험 문서에 기록한다.
-- raw log 전체를 반복 조회하지 않는다. status.json, 정해진 milestone, 완료 marker, anomaly를 우선한다.
-- 정상 상태 확인은 초기 5~10%, 중간 50%, 종료 시점으로 제한한다. 추가 확인은 오류·지표 급변·상태 갱신 중단에만 수행한다.
-- 상태 파일이 없다면 실행 프로그램이 제공하는 가장 작은 구조화된 출력만 조회한다.
-
-## 결과와 결정
-
-개별 실험 문서에는 결과, baseline 비교, 해석, 결정, 다음 조치, 산출물 경로를 기록한다.
-
-- ACCEPT: 가설 지지 및 다음 단계 진행
-- REJECT: 가설 기각
-- INCONCLUSIVE: 추가 검증 필요
-- FAILED: 실행 또는 환경 실패
-
-완료 상태는 실행 종료만으로 판단하지 않는다. 필요한 산출물, metric, baseline 비교, 해석, 결정, 상태 반영까지 완료해야 한다.
-
-## subagent 운영
-
-독립된 실험·로그 분석·코드 탐색처럼 결과를 분리해 회수할 수 있는 작업만 위임한다.
-
-위임 요청에는 실험 ID, 목적, 가설, baseline, 변경·비변경 항목, 실행 설정, 검증 기준, 중단 조건, 출력 경로, 반환 형식을 포함한다.
-
-worker는 raw output 대신 상태, 핵심 결과, baseline 비교, 해석과 권고, 실험 요약·raw log·checkpoint·metric 파일 경로를 반환한다.
-
-## 프로젝트별 자동화
-
-이 저장소에는 학습 코드와 로그 형식이 없으므로 범용 로그 파서나 실행 스크립트를 포함하지 않는다.
-
-반복 추적이 확인된 프로젝트에서만 다음 절차로 자동화를 추가한다.
-
-1. 학습 진입점, 실제 로그 샘플, metric 산출물, 완료·실패 신호를 확인한다.
-2. 입력 형식과 출력 스키마를 문서화한다.
-3. step, loss, validation metric, learning rate, error, status, last_update처럼 의사결정에 필요한 최소 정보만 추출하는 스크립트를 구현한다.
-4. 정상 로그, 실패 로그, 누락 필드에 대한 동작을 검증한다.
-5. 스크립트 실행 명령과 생성되는 status.json 또는 marker 경로를 CURRENT_STATE.md에 기록한다.
-
-자동화가 검증되기 전에는 log 형식이나 완료 신호를 가정하지 않는다.
-
-## 완료 조건
-
-- 각 실험에 ID, 요약 문서, 실행 산출물 경로 존재
-- CURRENT_STATE.md와 EXPERIMENT_INDEX.md 최신 상태 반영
-- 결정과 다음 조치 기록
+- `CURRENT_STATE.md`: 활성·차단 작업, 다음 조치, 링크만 60줄 이내 유지. 완료 결과의 장기 누적 금지
+- 상태 확인: `status.json`의 상태·처리량·오류 수·갱신 시각 확인. Raw log는 이상 시 관련 구간만 확인
+- 형식 불명 상태·로그에 범용 parser 가정 금지. 실제 정상/실패 로그 확인 후 자동화
+- 표적 수정 후 동일 실패 재발 시 반복 재시작 중단, 근거와 다음 진단 기록
+- 완료 시 입력 hash·누락/중복·평가 수·저장 metric 재현 확인, 오류·미검증 사항 기록
+- 사용한 프로세스 종료·자원 반환 확인, 보고서와 주제 인덱스 및 현재 상태 갱신
+- 신규 주제에만 전체 인덱스 갱신. 기존 주제 하위 실험마다 전체 문서 로딩 금지
 
 ## 검증 방법
 
-- 실험 ID별 문서, runs/E###/, index 항목의 경로 일치 확인
-- summary의 설정·metric·결정과 실제 산출물 대조
-- 상태 문서의 baseline·best experiment·next action 대조
+- 인덱스의 ID 유일성·보고서 링크·baseline 관계 확인
+- 환경 프로파일과 run 최종 설정 차이 및 예외 등록 대조
+- 아티팩트 존재·입력 및 metric 재현성 확인
+- 이관 시 원본 hash 보존과 기존 경로 호환 링크 확인

@@ -1,58 +1,18 @@
-# E###: 실험 제목
+# E### — 실험 제목
 
-## 상태
-
-- Status: PLANNED
-- Date: YYYY-MM-DD
-
-## 목적
-
-검증할 질문.
-
-## 가설
-
-예상 결과와 근거.
-
-## Baseline
-
-- Baseline experiment: E###
-- Change from baseline:
-
-## 변경 금지 항목
-
-- 없음
-
-## 설정과 재현성
-
-- Commit:
-- Dataset version:
-- Seed:
-- Model/checkpoint:
-- Execution command:
-- GPU/resource:
-- Output path:
-
-## 검증과 중단 조건
-
-- Success criteria:
-- Stopping condition:
-
-## 결과
-
-- Key metrics:
-- Raw log:
-- Metric output:
-- Checkpoint/artifact:
-
-## Baseline 비교
-
-- 없음
-
-## 해석
-
-- 없음
-
-## 결정
-
+- Topic / ID:
+- Status: PLANNED | RUNNING | COMPLETE | STOPPED | BLOCKED
 - Decision: ACCEPT | REJECT | INCONCLUSIVE | FAILED
-- Next action:
+- Objective / Hypothesis:
+- Baseline / derived_from / supersedes:
+- Main change / 비교 가능 조건:
+- Success criterion / Stop condition:
+- Dataset / prompt / metric version 및 hash:
+- Model / checkpoint:
+- Environment profile / revision / exception ID:
+- 참여 레포별 commit / dirty patch 경로 및 hash:
+- Run ID / manifest / 실행 명령:
+- Results / baseline delta / 오류·누락·중복:
+- Interpretation / 검증 결과 / 미검증 사항:
+- Decision 근거 / Next action:
+- Artifacts: workspace 상대 경로 및 hash

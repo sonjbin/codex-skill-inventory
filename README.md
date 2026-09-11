@@ -10,27 +10,38 @@ Reusable personal skills, agent guidance, and experiment workflow templates for 
 | development/review | Pull request review workflow |
 | development/experiments/experiment-runner | Reproducible training and evaluation experiment workflow |
 | documentation | Documentation writing guidance |
-| docs/experiments | Experiment guide, state template, index, and experiment template |
+| docs/experiments | Workspace topic indexes, compact state, guide, and study template |
+| docs/ENVIRONMENT.md | Shared environment profiles and scoped exceptions template |
 | AGENTS.md | Repository-level Codex operating rules |
 
 ## Use
 
-Copy or link an individual skill directory into the Codex skills directory.
+Keep this repository as the source of truth and symlink each managed skill directory into the skill discovery location used by your Codex installation. Editing the repository then updates the installed files without a second copy step.
 
-For example:
+The current official user discovery location is `~/.agents/skills/`; Codex supports symlinked skill folders. This workspace currently exposes skills through `.codex/skills/`, so verify the active installation location before switching it. See [official skill documentation](https://learn.chatgpt.com/docs/build-skills).
 
-    C:\Users\<user>\.codex\skills\development\experiments\experiment-runner
+For an installation already using `.codex/skills`, the intended relationship is:
 
-Use the experiment documents in a project that runs repeated training or evaluation work. Keep project-specific state, logs, artifacts, and automation in that project; this repository stores the reusable workflow only.
+```text
+.codex/skills/development/experiments/experiment-runner
+  -> codex-skill-inventory/development/experiments/experiment-runner
+```
+
+Before replacing an existing copy, compare its contents with the repository and preserve local-only edits. Move the old copy outside scanned skill directories, then create the link and verify skill discovery. Avoid exposing the same skill through multiple discovery roots.
+
+Link only managed skill folders. Keep Codex runtime configuration, authentication, session data, bundled system skills and plugin caches outside this repository. Workspace experiment documents are project-owned copies of templates, not live links back to inventory templates. Global AGENTS rules can be linked separately only when their intended scope and contents match; repository-specific AGENTS remain local.
+
+Copy the contents of `docs/` into `<workspace>/experiment-management/`. Declare this root in workspace AGENTS.md and link it from participating repository AGENTS.md. Keep this management directory under its own Git history; retain code, logs, predictions and checkpoints in the owning repositories. This inventory stores reusable templates only.
 
 ## Experiment workflow
 
-1. Read the experiment guide and current state.
-2. Define one hypothesis and one primary change from the baseline.
-3. Run and track the experiment with compact status rather than repeated raw-log reads.
-4. Record the result, comparison, decision, artifacts, and next action.
+1. Search the global topic index, then only the relevant topic index and required report.
+2. Reuse an existing study for reruns, add related studies under its topic, and create a new topic only for an unrelated objective.
+3. Read shared environment profiles and compact active state for execution. Register scoped exceptions; preserve resolved run settings and all participating repository revisions.
+4. Track compact status; inspect raw logs only for anomalies.
+5. Update the study and topic index with results, baseline comparison, decision and artifacts. Keep completed history out of current state.
 
-Create log parsing or status scripts only after examining the target project's actual training code and representative logs.
+Create project-specific status scripts only after inspecting actual normal and failure artifacts. With linked installation, edit the repository copy only; until linked, verify installed and inventory experiment-runner copies match.
 
 ## Validation
 
