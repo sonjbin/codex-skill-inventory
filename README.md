@@ -49,6 +49,8 @@ Create project-specific status scripts only after inspecting actual normal and f
 
 ## Validation
 
+Use the [research report comparison cases](evaluation/research-report.md) to evaluate report quality under controlled skill, example and review conditions.
+
 - Each skill contains a SKILL.md file with discovery metadata and operating instructions.
 - Experiment documents provide completion conditions and validation methods.
 - No project-specific training code, logs, datasets, or model artifacts are included.
