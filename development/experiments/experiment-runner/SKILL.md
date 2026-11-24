@@ -31,6 +31,10 @@ Do not load all reports, archived state, or raw logs to discover experiments. Do
 - Update the topic index; update the global index only for topic changes. Keep CURRENT_STATE.md to active/blocked work and next actions, within 60 lines; put completed history in studies.
 - Return a compact outcome with links. Check cardinality/hash/metric reproduction and cleanup as required by the actual experiment.
 
+## Human-readable reporting
+
+When a reader-facing report is requested, hand the verified study, baseline, metric sources, denominators, comparison conditions and unresolved validation issues to the research-report skill. Preserve the study and run artifacts. Use its quality rubric before delivering a Markdown report or presentation summary.
+
 ## Automation
 
 Create deterministic status/summarization scripts only after inspecting the real entrypoint and representative normal/failure artifacts. Document inputs, schema, command, missing-field behavior, completion/failure signals and validation cases. Never assume a generic framework log format.

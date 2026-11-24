@@ -9,7 +9,8 @@ Reusable personal skills, agent guidance, and experiment workflow templates for 
 | development/git | Git commit, pull request, and tag workflows |
 | development/review | Pull request review workflow |
 | development/experiments/experiment-runner | Reproducible training and evaluation experiment workflow |
-| documentation | Documentation writing guidance |
+| [documentation](documentation/documentation/SKILL.md) | Technical documentation for code, APIs and pipelines |
+| [research-report](documentation/research-report/SKILL.md) | Reader-facing experiment reports, comparisons and presentation summaries |
 | docs/experiments | Workspace topic indexes, compact state, guide, and study template |
 | docs/ENVIRONMENT.md | Shared environment profiles and scoped exceptions template |
 | AGENTS.md | Repository-level Codex operating rules |
@@ -33,6 +34,8 @@ Link only managed skill folders. Keep Codex runtime configuration, authenticatio
 
 Copy the contents of `docs/` into `<workspace>/experiment-management/`. Declare this root in workspace AGENTS.md and link it from participating repository AGENTS.md. Keep this management directory under its own Git history; retain code, logs, predictions and checkpoints in the owning repositories. This inventory stores reusable templates only.
 
+For research reporting, link the entire `documentation/research-report/` folder as `research-report` under the active skill root so the examples and rubric resolve. Check the link target and confirm the skill appears in a fresh session. For existing workspaces, merge the document routing from `AGENTS.md` and the reporting section from `EXPERIMENT_GUIDE.md` into their project-owned copies, preserving local rules and study records.
+
 ## Experiment workflow
 
 1. Search the global topic index, then only the relevant topic index and required report.
@@ -40,6 +43,7 @@ Copy the contents of `docs/` into `<workspace>/experiment-management/`. Declare 
 3. Read shared environment profiles and compact active state for execution. Register scoped exceptions; preserve resolved run settings and all participating repository revisions.
 4. Track compact status; inspect raw logs only for anomalies.
 5. Update the study and topic index with results, baseline comparison, decision and artifacts. Keep completed history out of current state.
+6. When a reader-facing report is requested, use research-report with the verified study and metric sources.
 
 Create project-specific status scripts only after inspecting actual normal and failure artifacts. With linked installation, edit the repository copy only; until linked, verify installed and inventory experiment-runner copies match.
 

@@ -24,3 +24,8 @@
 - Raw training log 반복 polling 금지. `status.json`, 완료 marker, milestone 또는 anomaly 중심 확인.
 - 종료 시 결과·baseline 차이·해석·결정·다음 조치·아티팩트 기록 및 주제 인덱스 갱신. `CURRENT_STATE.md`는 활성 작업·차단 사유·다음 조치만 60줄 이내 유지.
 - 로그·상태 자동화는 실제 형식과 검증 방법 확인 후 experiment-runner 절차 적용.
+
+## 문서 작성
+
+- 코드, API, 설정, 모듈의 동작 설명은 documentation Skill을 사용한다.
+- 실험 수행과 재현성 기록은 experiment-runner Skill을 사용한다. 실험 결과 비교, 오류 분석, 연구 진행 요약 등 독자용 보고서 작성에는 research-report Skill을 사용한다.
